@@ -2,6 +2,21 @@
 
 This project implements a machine learning model to predict house prices based on various features.
 
+## Dataset
+
+This project uses the House Prices: Advanced Regression Techniques dataset from Kaggle:
+- Dataset URL: [House Prices - Advanced Regression Techniques](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data)
+- Required files:
+  - `train.csv` - Training data
+  - `test.csv` - Test data
+  - `data_description.txt` - Description of features
+  - `sample_submission.csv` - Example submission format
+
+To get started:
+1. Download the dataset from Kaggle
+2. Place the CSV files in the `data/` directory
+3. The data files are gitignored to keep the repository clean
+
 ## Project Structure
 
 ```
@@ -21,7 +36,7 @@ house-price-prediction/
 
 1. Clone the repository
 2. Install dependencies: `pip install -r requirements.txt`
-3. Place your dataset in the `data/` directory
+3. Download the dataset from Kaggle and place it in the `data/` directory
 4. Run the notebooks in `notebooks/` for exploration
 5. Use the scripts in `src/` for model training
 6. Deploy the model using the app in `app/` directory

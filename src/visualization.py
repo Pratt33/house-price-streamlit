@@ -6,42 +6,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from yellowbrick.regressor import ResidualsPlot, PredictionError
-from yellowbrick.features import FeatureImportances
 from typing import List, Dict, Any
 import os
 import logging
 
 logger = logging.getLogger(__name__)
-
-def plot_feature_importance(model: Any, feature_names: List[str], output_dir: str) -> None:
-    """
-    Plot feature importances for tree-based models.
-    
-    Args:
-        model: Trained model with feature_importances_ attribute
-        feature_names: List of feature names
-        output_dir: Directory to save plots
-    """
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Get feature importances
-    importances = model.feature_importances_
-    indices = np.argsort(importances)[::-1]
-    
-    # Plot using matplotlib
-    plt.figure(figsize=(12, 8))
-    plt.title('Feature Importances')
-    plt.bar(range(len(importances)), importances[indices])
-    plt.xticks(range(len(importances)), [feature_names[i] for i in indices], rotation=90)
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'feature_importance.png'))
-    plt.close()
-    
-    # Plot using yellowbrick
-    visualizer = FeatureImportances(model, labels=feature_names)
-    visualizer.fit(model, feature_names)
-    visualizer.show(outpath=os.path.join(output_dir, 'feature_importance_yb.png'))
-    plt.close()
 
 def plot_residuals(model: Any, X: np.ndarray, y: np.ndarray, output_dir: str) -> None:
     """
@@ -80,7 +49,7 @@ def plot_model_comparison(metrics_df: pd.DataFrame, output_dir: str) -> None:
     os.makedirs(output_dir, exist_ok=True)
     
     # Set style
-    plt.style.use('seaborn')
+    plt.style.use('seaborn-v0_8')
     
     # RMSE Comparison
     plt.figure(figsize=(12, 6))
@@ -179,12 +148,10 @@ def generate_report(model: Any, X: np.ndarray, y: np.ndarray,
     """
     # Create output directories
     os.makedirs(output_dir, exist_ok=True)
-    os.makedirs(os.path.join(output_dir, 'feature_importance'), exist_ok=True)
     os.makedirs(os.path.join(output_dir, 'residuals'), exist_ok=True)
     os.makedirs(os.path.join(output_dir, 'predictions'), exist_ok=True)
     
     # Generate all plots
-    plot_feature_importance(model, feature_names, os.path.join(output_dir, 'feature_importance'))
     plot_residuals(model, X, y, os.path.join(output_dir, 'residuals'))
     
     # Get predictions

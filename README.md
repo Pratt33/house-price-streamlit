@@ -69,8 +69,7 @@ streamlit run deploy/app.py
 
 ## 🌐 Live Demo
 
-🔗 [Try the Deployed Streamlit App](https://pratt-house-value.streamlit.app)  
-*(Replace with actual URL if needed)*
+🔗 [Try the Deployed Streamlit App](https://house-price-pratt.streamlit.app)
 
 ---
 

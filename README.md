@@ -1,46 +1,138 @@
-# House Price Prediction
+# 🏡 House Price Prediction
 
-This project implements a machine learning model to predict house prices based on various features.
+An end-to-end machine learning solution to predict house prices based on real estate data. This project walks through data cleaning, feature engineering, model training, evaluation, and a deployed Streamlit app for interactive predictions.
 
-## Dataset
+---
 
-This project uses the House Prices: Advanced Regression Techniques dataset from Kaggle:
-- Dataset URL: [House Prices - Advanced Regression Techniques](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data)
-- Required files:
-  - `train.csv` - Training data
-  - `test.csv` - Test data
-  - `data_description.txt` - Description of features
-  - `sample_submission.csv` - Example submission format
+## 📌 Problem Statement
 
-To get started:
-1. Download the dataset from Kaggle
-2. Place the CSV files in the `data/` directory
-3. The data files are gitignored to keep the repository clean
+To predict the sale price of residential homes using various property features. The objective is to build a regression model that minimizes prediction error and generalizes well to unseen data.
 
-## Project Structure
+---
+
+## 📊 Dataset
+
+- **Competition:** [House Prices - Advanced Regression Techniques (Kaggle)](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques)
+- **Files Required:**
+  - `train.csv`, `test.csv`
+  - `data_description.txt`
+  - `sample_submission.csv`
+- 📁 Place them in the `/data/` directory (ignored via `.gitignore`)
+
+---
+
+## 🛠️ Tech Stack
+
+- **Languages & Libraries:** Python, Pandas, NumPy, Scikit-learn, XGBoost
+- **Visualization:** Matplotlib, Seaborn
+- **Deployment:** Streamlit
+- **Storage:** joblib (for saving models/pipelines)
+
+---
+
+## 📈 Workflow
+
+1. Data Cleaning & Exploratory Data Analysis (EDA)
+2. Feature Engineering & Transformation
+3. Model Training (Linear, Ridge, Lasso, Random Forest, XGBoost)
+4. Performance Evaluation (RMSE, R²)
+5. Streamlit App Deployment
+
+---
+
+## 🧱 Project Structure
 
 ```
 house-price-prediction/
-├── data/                 # Raw data or link to Kaggle dataset
-├── notebooks/            # Jupyter notebooks for exploration & testing
-├── src/                  # Core scripts for preprocessing, training, and utilities
-├── app/                  # Streamlit/Flask deployment files
-├── output/               # Generated plots and reports
+├── data/                 # Raw CSVs (ignored in Git)
+├── notebooks/            # EDA and experimentation
+├── src/                  # Core scripts (preprocessing, modeling)
+├── app/                  # Streamlit deployment app
+├── deploy/               # Minimal app version for Streamlit Cloud
+├── output/               # Model files, pipeline, and plots
+├── screenshots/          # Screenshots for README
 ├── requirements.txt      # Project dependencies
-├── README.md            # Project documentation
-├── .gitignore           # Git ignore rules
-└── LICENSE              # Project license
+├── .gitignore            # Git ignore rules
+├── LICENSE               # MIT License
+└── README.md             # Project documentation
 ```
 
-## Setup
+---
 
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Download the dataset from Kaggle and place it in the `data/` directory
-4. Run the notebooks in `notebooks/` for exploration
-5. Use the scripts in `src/` for model training
-6. Deploy the model using the app in `app/` directory
+## 🚀 How to Run
 
-## License
+```bash
+pip install -r requirements.txt
+streamlit run deploy/app.py
+```
 
-[Add your chosen license here] 
+---
+
+## 🌐 Live Demo
+
+🔗 [Try the Deployed Streamlit App](https://pratt-house-value.streamlit.app)  
+*(Replace with actual URL if needed)*
+
+---
+
+## 📌 Results
+
+- ✅ **Best Model:** Ridge Regression  
+- 📉 **Lowest RMSE:** `0.145`  
+- 📈 **Highest R²:** `0.887`  
+
+> Ridge Regression outperformed others in both RMSE and R², indicating strong predictive power. Lasso underperformed due to aggressive regularization. Ensemble models like Random Forest and XGBoost performed competitively but with slightly higher error.
+
+**RMSE in log units** ≈ `0.145` translates to ~$14,500 average deviation in real-world price scale.
+
+| Model              | RMSE   | R²      |
+|--------------------|--------|---------|
+| Linear Regression  | 0.156  | 0.870   |
+| **Ridge**          | 0.145  | 0.887 ✅ |
+| Lasso              | 0.433  | -0.006  |
+| Random Forest      | 0.159  | 0.865   |
+| XGBoost            | 0.156  | 0.869   |
+
+---
+
+## 📊 Model Visuals
+
+### 📌 RMSE & R² Comparison
+![RMSE Comparison](screenshots/rmse_comparison.png)
+![R² Comparison](screenshots/r2_comparison.png)
+
+### 📉 Residuals & Predictions (Ridge)
+![Residuals Plot](screenshots/residuals_plot.png)
+![Actual vs Predicted](screenshots/Ridge_actual_vs_pred.png)
+
+---
+
+## 📸 Screenshots
+
+### Streamlit App UI
+![App Screenshot](screenshots/streamlit_app.png)
+
+### Feature Importance Plot
+![Feature Importance](screenshots/feature_importance.png)
+
+### Residuals vs Predictions
+![Residual Plot](screenshots/residuals_plot.png)
+
+---
+
+## 🧠 Future Improvements
+
+- Hyperparameter tuning with `GridSearchCV` or `Optuna`
+- Model explainability with SHAP
+- Cross-validation to reduce overfitting
+- Location-based price maps using Folium/GeoPandas
+
+---
+
+## 🪪 License
+
+MIT License © 2025 Pratik Arvind Shirsath
+
+---
+
+> For best results, ensure your `requirements.txt` pins the same scikit-learn version used during model training.

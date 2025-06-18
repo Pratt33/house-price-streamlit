@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction - FAQ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; background: #f9f9f9; color: #222; }
+        h1 { color: #2c3e50; }
+        .faq { margin-bottom: 2rem; }
+        .question { font-weight: bold; margin-top: 1.5rem; }
+        .answer { margin: 0.5rem 0 1.5rem 1rem; }
+    </style>
+</head>
+<body>
+    <h1>House Price Prediction - FAQ</h1>
+
+    <div class="faq">
+        <div class="question">
+            1. Why does Lasso perform well in RMSE but very poorly in R²? What is the relationship between these two metrics?
+        </div>
+        <div class="answer">
+            RMSE measures average prediction error, while R² measures how well the model explains variance. Lasso can have a low RMSE if it predicts close to the mean, but if it underfits and doesn't capture variance, R² can be very low or negative. So, a model can have a reasonable RMSE but poor R² if it underfits.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            2. What is the main advantage of using Ridge over Lasso for this dataset?
+        </div>
+        <div class="answer">
+            Ridge keeps all features by shrinking coefficients, which helps when many features are relevant. Lasso can remove too many features, leading to underfitting and poor R².
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            3. What is the main takeaway from your results?
+        </div>
+        <div class="answer">
+            Ridge Regression gave the best balance of accuracy and generalization, with an average error of ~$14,500. The pipeline and features are effective for this problem.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            4. What steps did you take to ensure your model generalizes well?
+        </div>
+        <div class="answer">
+            I used feature engineering, regularization, and compared multiple models. I validated on unseen data and plan to add cross-validation and hyperparameter tuning.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            5. Why did you include both linear and ensemble models?
+        </div>
+        <div class="answer">
+            Linear models are interpretable and fast. Ensemble models like Random Forest and XGBoost capture complex patterns. Comparing both ensures the best model is chosen based on real performance.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            6. How can someone run or deploy your app?
+        </div>
+        <div class="answer">
+            Install dependencies with <code>pip install -r requirements.txt</code>, then run <code>streamlit run app/app.py</code>. The README has full instructions.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            7. What are your next steps or future improvements?
+        </div>
+        <div class="answer">
+            I plan to add hyperparameter tuning, model explainability with SHAP, cross-validation, and location-based price maps.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            8. What is the main advantage of using log transformation on the target variable?
+        </div>
+        <div class="answer">
+            Log transformation helps stabilize variance and makes the target distribution more normal, which improves model performance and reduces the impact of outliers.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            9. Why is model explainability important in this project?
+        </div>
+        <div class="answer">
+            Model explainability (e.g., with SHAP) helps understand which features drive predictions, making the model more transparent and trustworthy for users and stakeholders.
+        </div>
+    </div>
+
+    <div class="faq">
+        <div class="question">
+            10. How do you handle missing values in your pipeline?
+        </div>
+        <div class="answer">
+            I use median imputation for numeric features and most frequent or 'Missing' for categorical features, ensuring the pipeline can handle real-world data with gaps.
+        </div>
+    </div>
+
+</body>
+</html> 

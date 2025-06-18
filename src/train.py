@@ -3,8 +3,6 @@ Model training and evaluation for the house price prediction project.
 """
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
@@ -14,85 +12,20 @@ import logging
 from typing import Tuple, Dict, Any, List
 import os
 
-from .preprocessing import prepare_data
+from .preprocessing import prepare_data, create_preprocessing_pipeline
 from .utils import save_model, evaluate_model, load_data
+from .visualization import generate_report, plot_model_comparison
 
 logger = logging.getLogger(__name__)
 
-def plot_model_comparison(metrics_df: pd.DataFrame, output_dir: str) -> None:
-    """
-    Create visualizations comparing model performance.
-    
-    Args:
-        metrics_df: DataFrame containing model metrics
-        output_dir: Directory to save plots
-    """
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Set style
-    plt.style.use('seaborn')
-    
-    # RMSE Comparison
-    plt.figure(figsize=(10, 6))
-    sns.barplot(data=metrics_df, x='model', y='rmse')
-    plt.title('RMSE Comparison Across Models')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'rmse_comparison.png'))
-    plt.close()
-    
-    # R2 Score Comparison
-    plt.figure(figsize=(10, 6))
-    sns.barplot(data=metrics_df, x='model', y='r2')
-    plt.title('R² Score Comparison Across Models')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'r2_comparison.png'))
-    plt.close()
-
-def plot_prediction_errors(y_true: np.ndarray, y_pred: np.ndarray, model_name: str, output_dir: str) -> None:
-    """
-    Create visualizations of prediction errors.
-    
-    Args:
-        y_true: True target values
-        y_pred: Predicted target values
-        model_name: Name of the model
-        output_dir: Directory to save plots
-    """
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Calculate errors
-    errors = y_true - y_pred
-    
-    # Error distribution
-    plt.figure(figsize=(10, 6))
-    sns.histplot(errors, kde=True)
-    plt.title(f'Error Distribution - {model_name}')
-    plt.xlabel('Prediction Error')
-    plt.ylabel('Count')
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, f'{model_name}_error_dist.png'))
-    plt.close()
-    
-    # Actual vs Predicted
-    plt.figure(figsize=(10, 6))
-    plt.scatter(y_true, y_pred, alpha=0.5)
-    plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', lw=2)
-    plt.title(f'Actual vs Predicted - {model_name}')
-    plt.xlabel('Actual Values')
-    plt.ylabel('Predicted Values')
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, f'{model_name}_actual_vs_pred.png'))
-    plt.close()
-
-def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Tuple[Any, Dict[str, float]]:
+def train_model(X_train: np.ndarray, y_train: np.ndarray, feature_names: List[str]) -> Tuple[Any, Dict[str, float]]:
     """
     Train and compare multiple house price prediction models.
     
     Args:
         X_train: Training features
         y_train: Training target
+        feature_names: List of feature names
         
     Returns:
         Tuple of (best model, evaluation metrics)
@@ -140,8 +73,15 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Tuple[Any, Dict[str
         metrics['model'] = name
         metrics_list.append(metrics)
         
-        # Create error visualizations
-        plot_prediction_errors(y_val, y_pred, name, '../output/error_plots')
+        # Generate visualization report for each model
+        generate_report(
+            model=model,
+            X=X_val,
+            y=y_val,
+            feature_names=feature_names,
+            metrics=metrics,
+            output_dir=f'../output/model_reports/{name}'
+        )
         
         # Update best model if current model is better
         if metrics['r2'] > best_score:
@@ -176,8 +116,17 @@ def main():
         # Prepare data
         X_train, y_train, X_test = prepare_data(train_df, test_df)
         
+        # Get feature names from preprocessing pipeline
+        pipeline = create_preprocessing_pipeline()
+        feature_names = (
+            pipeline.named_steps['preprocessor']
+            .transformers_[0][2] +  # numeric features
+            pipeline.named_steps['preprocessor']
+            .transformers_[1][2]    # categorical features
+        )
+        
         # Train model
-        model, metrics = train_model(X_train, y_train)
+        model, metrics = train_model(X_train, y_train, feature_names)
         
         # Save model
         save_model(model, '../output/model.joblib')

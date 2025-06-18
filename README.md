@@ -48,7 +48,6 @@ house-price-prediction/
 ├── notebooks/            # EDA and experimentation
 ├── src/                  # Core scripts (preprocessing, modeling)
 ├── app/                  # Streamlit deployment app
-├── deploy/               # Minimal app version for Streamlit Cloud
 ├── output/               # Model files, pipeline, and plots
 ├── screenshots/          # Screenshots for README
 ├── requirements.txt      # Project dependencies
